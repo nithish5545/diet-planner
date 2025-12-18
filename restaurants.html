@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Restaurants - Travel Explorer</title>
+  <style>
+    /* 🔹 Common Background & Styling */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #f1c40f;
+    }
+
+    .container {
+      flex: 1;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.3);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #f1c40f;
+    }
+
+    .restaurant {
+      margin: 15px 0;
+      padding: 15px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 8px;
+      transition: transform 0.3s;
+    }
+
+    .restaurant:hover {
+      transform: scale(1.05);
+    }
+
+    .restaurant h3 a {
+      color: #f39c12;
+      text-decoration: none;
+    }
+
+    .restaurant h3 a:hover {
+      text-decoration: underline;
+    }
+
+    /* 🔹 Animations */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* 🔹 Responsive Design */
+    @media (max-width: 768px) {
+      nav a {
+        display: block;
+        margin: 10px 0;
+      }
+      .container {
+        margin: 15px;
+        padding: 15px;
+      }
+      h2 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">🏠 Home</a>
+      <a href="car-rental.html">🚗 Car Rental</a>
+      <a href="hotels.html">🏨 Hotels</a>
+      <a href="restaurants.html">🍴 Restaurants</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>🍴 Best Restaurants</h2>
+    <div id="restaurantList"></div>
+    <button onclick="goBack()" style="margin-top:20px; padding:10px 20px; background:#e67e22; border:none; border-radius:6px; cursor:pointer; color:#fff; font-size:16px;">⬅ Back</button>
+  </div>
+
+  <script>
+    // 🔹 Restaurant Data (linked to official sites)
+    const cityRestaurants = {
+      "Chennai": [
+        { name: "Murugan Idli Shop", url: "https://muruganidlishop.com/" },
+        { name: "Benjarong", url: "https://www.benjarongrestaurant.com/" }
+      ],
+      "Madurai": [
+        { name: "Amma Mess", url: "https://www.facebook.com/ammamessmadurai/" },
+        { name: "Kumar Mess", url: "https://www.zomato.com/madurai/kumar-mess" }
+      ],
+      "Coimbatore": [
+        { name: "Annapoorna Gowrishankar", url: "https://www.annapoorna.com/" },
+        { name: "Haribhavanam", url: "https://haribhavanam.com/" }
+      ],
+      "Kochi": [
+        { name: "Ginger House Restaurant", url: "https://gingerhouserestaurant.com/" },
+        { name: "Dhe Puttu", url: "https://www.facebook.com/dheputtu/" }
+      ],
+      "Thiruvananthapuram": [
+        { name: "Villa Maya", url: "https://villamaya.in/" },
+        { name: "Zam Zam", url: "https://zamzamrestaurant.com/" }
+      ]
+    };
+
+    // 🔹 Get selected city
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    function loadRestaurants() {
+      let selectedCity = getQueryParam("city") || localStorage.getItem("selectedCity");
+      const restaurantList = document.getElementById("restaurantList");
+
+      if (!selectedCity) {
+        restaurantList.innerHTML = "<p>No City Selected.</p>";
+        return;
+      }
+
+      const restaurants = cityRestaurants[selectedCity] || [];
+      if (restaurants.length === 0) {
+        restaurantList.innerHTML = "<p>No restaurants found for this city.</p>";
+      } else {
+        restaurants.forEach(r => {
+          const div = document.createElement("div");
+          div.className = "restaurant";
+          div.innerHTML = `<h3><a href="${r.url}" target="_blank">${r.name}</a></h3>`;
+          restaurantList.appendChild(div);
+        });
+      }
+    }
+
+    function goBack() {
+      window.location.href = "index.html";
+    }
+
+    loadRestaurants();
+  </script>
+</body>
+</html>

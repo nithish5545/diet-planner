@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Rental - Travel Explorer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #000000, #434343);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    header { background: #111; padding: 1rem; text-align: center; }
+    header nav a { margin: 0 10px; color: #fff; text-decoration: none; font-weight: bold; }
+    .container { padding: 20px; }
+    form { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; }
+    label { display: block; margin: 10px 0 5px; }
+    select, input { width: 100%; padding: 8px; border-radius: 5px; border: none; }
+    button { margin-top: 15px; padding: 10px; width: 100%; border: none; border-radius: 5px; background: #ff9800; color: #fff; font-weight: bold; cursor: pointer; }
+    #resultBox { margin-top: 20px; background: rgba(0,0,0,0.5); padding: 15px; border-radius: 10px; display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚗 Car Rental</h1>
+    <nav>
+      <a href="index.html">🏠 Home</a>
+      <a href="hotels.html">🏨 Hotels</a>
+      <a href="restaurants.html">🍴 Restaurants</a>
+      <a href="car-rental.html">🚗 Car Rental</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <form id="rentalForm">
+      <label for="pickup">Pickup City</label>
+      <input type="text" id="pickup" readonly>
+
+      <label for="carType">Car Type</label>
+      <select id="carType">
+        <option value="Economy">Economy - ₹1500/day</option>
+        <option value="Sedan">Sedan - ₹2500/day</option>
+        <option value="SUV">SUV - ₹4000/day</option>
+        <option value="Luxury">Luxury - ₹7000/day</option>
+      </select>
+
+      <label for="days">Number of Days</label>
+      <input type="number" id="days" min="1" value="3">
+
+      <button type="submit">Confirm Booking</button>
+    </form>
+
+    <div id="resultBox"></div>
+  </div>
+
+  <script>
+    const pickupInput = document.getElementById("pickup");
+    const form = document.getElementById("rentalForm");
+    const resultBox = document.getElementById("resultBox");
+
+    function loadCity() {
+      let city = localStorage.getItem("selectedCity");
+      if (city) pickupInput.value = city;
+    }
+    loadCity();
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const city = pickupInput.value;
+      const days = parseInt(document.getElementById("days").value);
+      const carType = document.getElementById("carType").value;
+
+      let rate = 0;
+      switch(carType) {
+        case "Economy": rate = 1500; break;
+        case "Sedan": rate = 2500; break;
+        case "SUV": rate = 4000; break;
+        case "Luxury": rate = 7000; break;
+      }
+
+      const total = days * rate;
+      const booking = { city, days, carType, total };
+      localStorage.setItem("carRental", JSON.stringify(booking));
+
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `
+        <h3>✅ Booking Confirmed!</h3>
+        <p><strong>City:</strong> ${city}</p>
+        <p><strong>Car:</strong> ${carType}</p>
+        <p><strong>Days:</strong> ${days}</p>
+        <p><strong>Total Rent:</strong> ₹${total}</p>
+      `;
+    });
+  </script>
+</body>
+</html>

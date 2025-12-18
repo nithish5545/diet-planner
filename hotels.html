@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotels Explorer</title>
+  <style>
+    body { margin:0; font-family:"Segoe UI",Arial,sans-serif; background:linear-gradient(135deg,#ACB6E5,#74ebd5); padding:20px; color:#333; }
+    h1 { text-align:center; color:#fff; text-shadow:1px 1px 3px rgba(0,0,0,0.5); }
+    .hotel { background:#fff; margin:15px auto; padding:15px; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.1); max-width:700px; }
+    .hotel a { text-decoration:none; color:#007bff; font-weight:bold; }
+    .hotel a:hover { color:#0056b3; text-decoration:underline; }
+    button { display:block; margin:20px auto; background:#007bff; color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; }
+    button:hover { background:#0056b3; }
+  </style>
+</head>
+<body>
+  <h1 id="pageTitle">Hotels</h1>
+  <div id="hotelList"></div>
+  <button onclick="goBack()">⬅ Back to Cities</button>
+
+  <script>
+    const cityHotels = {
+      "Chennai": [
+        { name: "ITC Grand Chola", url: "https://www.itchotels.com/in/en/itcgrandchola-chennai" },
+        { name: "Taj Coromandel", url: "https://www.tajhotels.com/en-in/taj/taj-coromandel-chennai/" },
+        { name: "The Leela Palace", url: "https://www.theleela.com/the-leela-palace-chennai/" }
+      ],
+      "Madurai": [
+        { name: "Heritage Madurai", url: "https://www.heritagemadurai.com/" },
+        { name: "Courtyard by Marriott", url: "https://www.marriott.com/en-us/hotels/ixmcy-courtyard-madurai/overview/" },
+        { name: "Astoria", url: "https://www.grtgrandmadurai.com/" }
+      ],
+      "Ooty": [
+        { name: "Savoy Ooty", url: "https://www.itchotels.com/in/en/savoy-ooty" },
+        { name: "Gem Park Ooty", url: "http://www.gemparkooty.com/" },
+        { name: "Sterling Ooty", url: "https://www.sterlingholidays.com/resorts-hotels/ooty-fern-hill" }
+      ],
+      "Kochi": [
+        { name: "Taj Malabar Resort", url: "https://www.tajhotels.com/en-in/taj/taj-malabar-resort-kochi/" },
+        { name: "Le Meridien Kochi", url: "https://www.marriott.com/en-us/hotels/cokmd-le-meridien-kochi/overview/" },
+        { name: "Brunton Boatyard", url: "https://www.cghearth.com/brunton-boatyard" }
+      ],
+      "Munnar": [
+        { name: "Tea County", url: "https://www.ktdc.com/tea-county-munnar" },
+        { name: "Parakkat Nature Resort", url: "https://www.parakkatresorts.com/" },
+        { name: "The Fog Resort", url: "https://thefogmunnar.com/" }
+      ]
+    };
+
+    function loadHotels() {
+      const selectedCity = localStorage.getItem("selectedCity");
+      const hotelList = document.getElementById("hotelList");
+      const pageTitle = document.getElementById("pageTitle");
+
+      if (!selectedCity) {
+        pageTitle.innerText = "No City Selected";
+        return;
+      }
+
+      pageTitle.innerText = `${selectedCity} - Hotels`;
+
+      const hotels = cityHotels[selectedCity] || [];
+      if (hotels.length === 0) {
+        hotelList.innerHTML = "<p>No hotels found for this city.</p>";
+      } else {
+        hotels.forEach(hotel => {
+          const div = document.createElement("div");
+          div.className = "hotel";
+          div.innerHTML = `<h3><a href="${hotel.url}" target="_blank">${hotel.name}</a></h3>`;
+          hotelList.appendChild(div);
+        });
+      }
+    }
+
+    function goBack() {
+      window.location.href = "index.html";
+    }
+
+    loadHotels();
+  </script>
+</body>
+</html>
