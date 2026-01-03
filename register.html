@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Register</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  background: linear-gradient(to bottom, #1e3c72, #2a5298);
+  color: #fff;
+  min-height: 100vh;
+}
+.container {
+  padding: 20px;
+  max-width: 400px;
+  margin: 80px auto;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: none;
+}
+button {
+  background: #ff9800;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:hover { background: #e68900; }
+a { color: #ff9800; font-weight: bold; text-decoration: none; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Register</h2>
+
+  <input type="text" id="name" placeholder="Name" required>
+  <input type="text" id="mobile" placeholder="Mobile Number" required>
+  <input type="email" id="email" placeholder="Email" required>
+
+  <button onclick="register()">Register</button>
+
+  <p>Already a user? <a href="login.html">Login here</a></p>
+</div>
+
+<script>
+function register() {
+    const name = document.getElementById("name").value;
+    const mobile = document.getElementById("mobile").value;
+    const email = document.getElementById("email").value;
+
+    fetch("http://127.0.0.1:5000/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, mobile, email })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success") {
+            localStorage.setItem("user", JSON.stringify({ name, mobile, email }));
+            window.location.href = "index.html"; // auto login
+        } else {
+            alert(data.message);
+        }
+    });
+}
+</script>
+
+</body>
+</html>
